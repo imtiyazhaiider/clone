@@ -1,13 +1,26 @@
-import Link from "next/link";
+interface Article {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  published: string;
+}
 
-export default async function CategoryPage({ params }) {
+interface PageProps {
+  params: {
+    name: string;
+  };
+}
+
+export default async function CategoryPage({ params }: PageProps) {
   const { name } = params;
 
   const res = await fetch("https://clone-bice-three.vercel.app/news.json");
   const data = await res.json();
 
-  const articles = data.articles.filter(
-    (a) => a.category.toLowerCase() === name.toLowerCase()
+  const articles: Article[] = data.articles.filter(
+    (a: Article) => a.category.toLowerCase() === name.toLowerCase()
   );
 
   return (
@@ -20,7 +33,7 @@ export default async function CategoryPage({ params }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {articles.map((article) => (
-          <Link
+          <a
             key={article.id}
             href={`/article/${article.id}`}
             className="border rounded-lg shadow-md overflow-hidden"
@@ -28,13 +41,13 @@ export default async function CategoryPage({ params }) {
             <img
               src={article.image}
               className="w-full h-64 object-cover"
-              alt=""
+              alt={article.title}
             />
             <div className="p-4">
               <h2 className="text-xl font-semibold">{article.title}</h2>
               <p className="text-gray-600">{article.description}</p>
             </div>
-          </Link>
+          </a>
         ))}
       </div>
     </div>

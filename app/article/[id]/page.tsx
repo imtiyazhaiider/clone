@@ -1,10 +1,28 @@
-export default async function ArticlePage({ params }) {
+interface Article {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  image: string;
+  category: string;
+  published: string;
+}
+
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ArticlePage({ params }: PageProps) {
   const { id } = params;
 
   const res = await fetch("https://clone-bice-three.vercel.app/news.json");
   const data = await res.json();
 
-  const article = data.articles.find((a) => a.id === id);
+  const article: Article | undefined = data.articles.find(
+    (a: Article) => a.id === id
+  );
 
   if (!article) {
     return <h1 className="p-10 text-center">Article Not Found</h1>;

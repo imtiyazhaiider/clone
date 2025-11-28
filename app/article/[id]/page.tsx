@@ -21,9 +21,16 @@ export default async function ArticlePage({ params }: { params: { id: string } }
 
   if (!article) return <div className="p-10">Article not found</div>;
 
+  const published = new Date(article.published).toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+
+      <p className="text-gray-500 mb-1">{published}</p>
 
       <div className="relative h-80 w-full mb-4">
         <Image

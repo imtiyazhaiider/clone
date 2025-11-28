@@ -12,9 +12,7 @@ interface Article {
 }
 
 async function getNews(): Promise<Article[]> {
-  const res = await fetch("http://localhost:3000/news.json", {
-    cache: "no-store",
-  });
+  const res = await fetch("/news.json", { cache: "no-store" });
   const data = await res.json();
   return data.articles;
 }

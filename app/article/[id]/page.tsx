@@ -1,52 +1,39 @@
-interface Article {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  image: string;
-  category: string;
-  published: string;
-}
+import fs from "fs";
+import path from "path";
 
-interface PageProps {
-  params: { id: string };
-}
+export default async function ArticlePage({ params }: { params: { id: string } }) {
+  const filePath = path.join(process.cwd(), "public", "news.json");
+  const jsonData = fs.readFileSync(filePath, "utf-8");
+  const data = JSON.parse(jsonData);
 
-export default async function ArticlePage({ params }: PageProps) {
-  const { id } = params;
-
-  const base = process.env.NEXT_PUBLIC_BASE_URL!;
-  const res = await fetch(`${base}/news.json`, { cache: "no-store" });
-  const data = await res.json();
-
-  const article: Article | undefined = data.articles.find(
-    (a: Article) => a.id === id
-  );
+  const article = data.articles.find((a: any) => a.id == params.id);
 
   if (!article) {
     return (
-      <h1 className="text-center p-10 text-2xl text-red-500">
-        Article Not Found
-      </h1>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <h1 className="text-3xl text-red-600 font-bold">Article Not Found</h1>
+      </div>
     );
   }
 
+  // Convert published date
+  const published = new Date(article.published).toLocaleDateString("en-IN", {
+    dateStyle: "medium",
+  });
+
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
+
+      <p className="text-gray-500 mb-4">Published: {published}</p>
+
       <img
         src={article.image}
-        className="w-full h-96 object-cover rounded-lg shadow-md"
         alt={article.title}
+        className="rounded-lg w-full mb-6"
       />
 
-      <h1 className="text-4xl font-bold mt-6">{article.title}</h1>
-
-      <p className="text-gray-500 mt-2">
-        Published on{" "}
-        {new Date(article.published).toLocaleDateString("en-IN")}
-      </p>
-
-      <p className="mt-6 text-lg leading-relaxed">{article.content}</p>
+      <p className="text-lg leading-7">{article.content}</p>
     </div>
   );
 }

@@ -1,11 +1,11 @@
-interface Article {
+type Article = {
   id: string;
   title: string;
   description: string;
   image: string;
   category: string;
   published: string;
-}
+};
 
 interface PageProps {
   params: {
@@ -16,7 +16,9 @@ interface PageProps {
 export default async function CategoryPage({ params }: PageProps) {
   const { name } = params;
 
-  const res = await fetch("https://clone-bice-three.vercel.app/news.json");
+  const res = await fetch("https://clone-bice-three.vercel.app/news.json", {
+    cache: "no-store",
+  });
   const data = await res.json();
 
   const articles: Article[] = data.articles.filter(

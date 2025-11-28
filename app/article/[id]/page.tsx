@@ -1,4 +1,4 @@
-interface Article {
+type Article = {
   id: string;
   title: string;
   description: string;
@@ -6,7 +6,7 @@ interface Article {
   image: string;
   category: string;
   published: string;
-}
+};
 
 interface PageProps {
   params: {
@@ -17,7 +17,9 @@ interface PageProps {
 export default async function ArticlePage({ params }: PageProps) {
   const { id } = params;
 
-  const res = await fetch("https://clone-bice-three.vercel.app/news.json");
+  const res = await fetch("https://clone-bice-three.vercel.app/news.json", {
+    cache: "no-store",
+  });
   const data = await res.json();
 
   const article: Article | undefined = data.articles.find(
@@ -39,7 +41,8 @@ export default async function ArticlePage({ params }: PageProps) {
       <h1 className="text-4xl font-bold mt-6">{article.title}</h1>
 
       <p className="text-gray-500 mt-2 text-sm">
-        Published on {new Date(article.published).toLocaleDateString("en-IN")}
+        Published on{" "}
+        {new Date(article.published).toLocaleDateString("en-IN")}
       </p>
 
       <p className="mt-6 text-lg leading-relaxed">{article.content}</p>

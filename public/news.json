@@ -1,0 +1,40 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "India and Japan strengthen strategic ties",
+      "description": "Both nations collaborated on defence, trade, and technology exchanges.",
+      "content": "Full article content for this news goes here.",
+      "image": "https://picsum.photos/800/400?random=1",
+      "category": "india",
+      "published": "2025-01-01"
+    },
+    {
+      "id": "2",
+      "title": "Breakthrough in AI shocks scientists",
+      "description": "A major advancement in artificial intelligence has emerged.",
+      "content": "Full article content for this news goes here.",
+      "image": "https://picsum.photos/800/400?random=2",
+      "category": "world",
+      "published": "2025-01-02"
+    },
+    {
+      "id": "3",
+      "title": "India wins crucial cricket match",
+      "description": "Huge celebrations across the country.",
+      "content": "Full article content for this news goes here.",
+      "image": "https://picsum.photos/800/400?random=3",
+      "category": "sports",
+      "published": "2025-01-03"
+    },
+    {
+      "id": "4",
+      "title": "Bollywood star announces new blockbuster",
+      "description": "Fans are excited as the star returns.",
+      "content": "Full article content for this news goes here.",
+      "image": "https://picsum.photos/800/400?random=4",
+      "category": "entertainment",
+      "published": "2025-01-04"
+    }
+  ]
+}

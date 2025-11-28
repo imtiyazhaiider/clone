@@ -4,7 +4,7 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
 async function getNews() {
-  const res = await fetch("http://localhost:3000/news.json", {
+  const res = await fetch("/news.json", {
     cache: "no-store",
   });
   const data = await res.json();

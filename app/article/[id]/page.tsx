@@ -11,7 +11,7 @@ interface Article {
 }
 
 async function getArticle(id: string): Promise<Article | null> {
-  const res = await fetch("http://localhost:3000/news.json");
+  const res = await fetch("/news.json");
   const data = await res.json();
   return data.articles.find((a: Article) => a.id === id) || null;
 }

@@ -1,49 +1,30 @@
-import Image from "next/image";
+export default async function ArticlePage({ params }) {
+  const { id } = params;
 
-interface Article {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  image: string;
-  category: string;
-  published: string;
-}
-
-async function getArticle(id: string): Promise<Article | null> {
-  const res = await fetch("/news.json");
+  const res = await fetch("https://clone-bice-three.vercel.app/news.json");
   const data = await res.json();
-  return data.articles.find((a: Article) => a.id === id) || null;
-}
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
-  const article = await getArticle(params.id);
+  const article = data.articles.find((a) => a.id === id);
 
-  if (!article) return <div className="p-10">Article not found</div>;
-
-  const published = new Date(article.published).toLocaleString("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
+  if (!article) {
+    return <h1 className="p-10 text-center">Article Not Found</h1>;
+  }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+    <div className="max-w-4xl mx-auto p-6">
+      <img
+        src={article.image}
+        alt={article.title}
+        className="w-full h-96 object-cover rounded-lg shadow-md"
+      />
 
-      <p className="text-gray-500 mb-1">{published}</p>
+      <h1 className="text-4xl font-bold mt-6">{article.title}</h1>
 
-      <div className="relative h-80 w-full mb-4">
-        <Image
-          src={article.image}
-          alt={article.title}
-          fill
-          className="object-cover rounded-lg"
-          unoptimized
-        />
-      </div>
+      <p className="text-gray-500 mt-2 text-sm">
+        Published on {new Date(article.published).toLocaleDateString("en-IN")}
+      </p>
 
-      <p className="text-gray-600 mb-4">{article.description}</p>
-      <p className="text-lg leading-relaxed">{article.content}</p>
+      <p className="mt-6 text-lg leading-relaxed">{article.content}</p>
     </div>
   );
 }

@@ -1,36 +1,38 @@
 import Link from "next/link";
-import Image from "next/image";
 
-async function getNews() {
-  const res = await fetch("/news.json", { cache: "no-store" });
+export default async function CategoryPage({ params }) {
+  const { name } = params;
+
+  const res = await fetch("https://clone-bice-three.vercel.app/news.json");
   const data = await res.json();
-  return data.articles;
-}
 
-export default async function CategoryPage({ params }: { params: { name: string } }) {
-  const articles = await getNews();
-  const filtered = articles.filter(
-    (a: any) => a.category.toLowerCase() === params.name.toLowerCase()
+  const articles = data.articles.filter(
+    (a) => a.category.toLowerCase() === name.toLowerCase()
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">{params.name.toUpperCase()} News</h1>
+    <div className="max-w-6xl mx-auto p-5">
+      <h1 className="text-3xl font-bold mb-6">
+        Category: {name.toUpperCase()}
+      </h1>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((article) => (
-          <Link key={article.id} href={`/article/${article.id}`}>
-            <div className="bg-white rounded-lg shadow p-3 hover:shadow-xl transition">
-              <div className="relative h-40 w-full">
-                <Image
-                  src={article.image}
-                  alt={article.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-              <h2 className="font-bold mt-2">{article.title}</h2>
+      {articles.length === 0 && <p>No articles found.</p>}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {articles.map((article) => (
+          <Link
+            key={article.id}
+            href={`/article/${article.id}`}
+            className="border rounded-lg shadow-md overflow-hidden"
+          >
+            <img
+              src={article.image}
+              className="w-full h-64 object-cover"
+              alt=""
+            />
+            <div className="p-4">
+              <h2 className="text-xl font-semibold">{article.title}</h2>
+              <p className="text-gray-600">{article.description}</p>
             </div>
           </Link>
         ))}

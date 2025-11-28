@@ -1,4 +1,4 @@
-type Article = {
+interface Article {
   id: string;
   title: string;
   description: string;
@@ -6,20 +6,17 @@ type Article = {
   image: string;
   category: string;
   published: string;
-};
+}
 
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: { id: string };
 }
 
 export default async function ArticlePage({ params }: PageProps) {
   const { id } = params;
 
-  const res = await fetch("https://clone-bice-three.vercel.app/news.json", {
-    cache: "no-store",
-  });
+  const base = process.env.NEXT_PUBLIC_BASE_URL!;
+  const res = await fetch(`${base}/news.json`, { cache: "no-store" });
   const data = await res.json();
 
   const article: Article | undefined = data.articles.find(
@@ -27,20 +24,24 @@ export default async function ArticlePage({ params }: PageProps) {
   );
 
   if (!article) {
-    return <h1 className="p-10 text-center">Article Not Found</h1>;
+    return (
+      <h1 className="text-center p-10 text-2xl text-red-500">
+        Article Not Found
+      </h1>
+    );
   }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <img
         src={article.image}
-        alt={article.title}
         className="w-full h-96 object-cover rounded-lg shadow-md"
+        alt={article.title}
       />
 
       <h1 className="text-4xl font-bold mt-6">{article.title}</h1>
 
-      <p className="text-gray-500 mt-2 text-sm">
+      <p className="text-gray-500 mt-2">
         Published on{" "}
         {new Date(article.published).toLocaleDateString("en-IN")}
       </p>
